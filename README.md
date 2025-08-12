@@ -93,14 +93,6 @@ Each tool returns structured JSON data optimized for AI analysis and decision-ma
 
 [![Install for VS Code](https://img.shields.io/badge/VS_Code-Install_Community_SonarCloud_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=community-sonarcloud-mcp&inputs=%5B%7B%22id%22%3A%22SONARCLOUD_TOKEN%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22SonarCloud%20Token%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22SONARCLOUD_ORGANIZATION%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22SonarCloud%20Organization%20Key%22%2C%22password%22%3Afalse%7D%5D&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22community-sonarcloud-mcp-server%22%5D%2C%22env%22%3A%7B%22SONARCLOUD_TOKEN%22%3A%22%24%7Binput%3ASONARCLOUD_TOKEN%7D%22%2C%22SONARCLOUD_ORGANIZATION%22%3A%22%24%7Binput%3ASONARCLOUD_ORGANIZATION%7D%22%7D%7D)
 
-### Cursor
-
-[![Install for Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=community-sonarcloud-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyJzb25hcmNsb3VkLW1jcC1zZXJ2ZXIiXSwiZW52Ijp7IlNPTkFSQ0xPVURfVE9LRU4iOiI8dG9rZW4%2BIiwiU09OQVJDTE9VRF9PUkdBTklaQVRJT04iOiI8b3JnPiJ9fQ%3D%3D)
-
-### Claude Code
-
-[![Install for Claude Code](https://img.shields.io/badge/Claude_Code-Install_Community_SonarCloud_MCP-FF6B35?style=flat-square&logo=anthropic&logoColor=white)](claude-desktop://install-mcp-server?name=community-sonarcloud-mcp&serverConfig=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22community-sonarcloud-mcp-server%22%5D%2C%22env%22%3A%7B%22SONARCLOUD_TOKEN%22%3A%22%3Ctoken%3E%22%2C%22SONARCLOUD_ORGANIZATION%22%3A%22%3Corg%3E%22%7D%7D)
-
 ## Manual Configuration
 
 Add this server to your MCP configuration file (`.mcp.json` for Claude Code):
