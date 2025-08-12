@@ -1,5 +1,5 @@
 {
-  "name": "community-community-sonarcloud-mcp-server",
+  "name": "community-sonarcloud-mcp-server",
   "version": "1.0.0",
   "description": "Model Context Protocol (MCP) server for SonarCloud integration - provides AI tools for querying code quality metrics, issues, and project data",
   "main": "dist/index.js",
