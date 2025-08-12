@@ -1,8 +1,8 @@
 # SonarCloud MCP Server
 
 [![npm version](https://img.shields.io/npm/v/sonarcloud-mcp-server.svg)](https://www.npmjs.com/package/sonarcloud-mcp-server)
-[![npm downloads](https://img.shields.io/npm/dm/sonarcloud-mcp-server.svg)](https://www.npmjs.com/package/sonarcloud-mcp-server)
-[![License](https://img.shields.io/npm/l/sonarcloud-mcp-server.svg)](LICENSE)
+[![npm downloads](https://img.shields.io/npm/dt/sonarcloud-mcp-server.svg)](https://www.npmjs.com/package/sonarcloud-mcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/langtind/sonarcloud-mcp-server.svg)](https://github.com/langtind/sonarcloud-mcp-server/issues)
 
 A TypeScript-based Model Context Protocol (MCP) server that provides AI assistants with seamless access to SonarCloud data. Query code quality metrics, issues, pull requests, and project information directly from your AI tools.
