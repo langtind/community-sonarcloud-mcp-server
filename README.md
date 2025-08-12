@@ -145,7 +145,7 @@ The server will automatically query SonarCloud and return structured data for an
 ## Development
 
 ```bash
-git clone https://github.com/arildlangtind/sonarcloud-mcp-server.git
+git clone https://github.com/langtind/sonarcloud-mcp-server.git
 cd sonarcloud-mcp-server
 npm install
 npm run dev

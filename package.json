@@ -17,12 +17,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arildlangtind/sonarcloud-mcp-server.git"
+    "url": "git+https://github.com/langtind/sonarcloud-mcp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/arildlangtind/sonarcloud-mcp-server/issues"
+    "url": "https://github.com/langtind/sonarcloud-mcp-server/issues"
   },
-  "homepage": "https://github.com/arildlangtind/sonarcloud-mcp-server#readme",
+  "homepage": "https://github.com/langtind/sonarcloud-mcp-server#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "axios": "^1.7.0"
