@@ -95,7 +95,7 @@ Each tool returns structured JSON data optimized for AI analysis and decision-ma
 
 ### Cursor
 
-[![Install for Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=sonarcloud&config=eyJjb21tYW5kIjoibnB4IHNvbmFyY2xvdWQtbWNwLXNlcnZlciIsImVudiI6eyJTT05BUkNMT1VEX1RPS0VOIjoiPHRva2VuPiIsIlNPTkFSQ0xPVURfT1JHQU5JWkFUSU9OIjoiPG9yZz4ifX0%3D)
+[![Install for Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=sonarcloud&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyJzb25hcmNsb3VkLW1jcC1zZXJ2ZXIiXSwiZW52Ijp7IlNPTkFSQ0xPVURfVE9LRU4iOiI8dG9rZW4%2BIiwiU09OQVJDTE9VRF9PUkdBTklaQVRJT04iOiI8b3JnPiJ9fQ%3D%3D)
 
 ### Claude Code
 
