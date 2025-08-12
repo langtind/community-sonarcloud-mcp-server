@@ -1,5 +1,10 @@
 # SonarCloud MCP Server
 
+[![npm version](https://img.shields.io/npm/v/sonarcloud-mcp-server.svg)](https://www.npmjs.com/package/sonarcloud-mcp-server)
+[![npm downloads](https://img.shields.io/npm/dm/sonarcloud-mcp-server.svg)](https://www.npmjs.com/package/sonarcloud-mcp-server)
+[![License](https://img.shields.io/npm/l/sonarcloud-mcp-server.svg)](LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/langtind/sonarcloud-mcp-server.svg)](https://github.com/langtind/sonarcloud-mcp-server/issues)
+
 A TypeScript-based Model Context Protocol (MCP) server that provides AI assistants with seamless access to SonarCloud data. Query code quality metrics, issues, pull requests, and project information directly from your AI tools.
 
 ## Why This Server?
@@ -82,7 +87,21 @@ This server provides 12 comprehensive tools for SonarCloud integration:
 
 Each tool returns structured JSON data optimized for AI analysis and decision-making.
 
-## MCP Configuration
+## Quick Setup
+
+### VS Code
+
+[![Install for VS Code](https://img.shields.io/badge/VS_Code-Install_SonarCloud_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=sonarcloud&inputs=%5B%7B%22id%22%3A%22SONARCLOUD_TOKEN%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22SonarCloud%20Token%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22SONARCLOUD_ORGANIZATION%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22SonarCloud%20Organization%20Key%22%2C%22password%22%3Afalse%7D%5D&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22sonarcloud-mcp-server%22%5D%2C%22env%22%3A%7B%22SONARCLOUD_TOKEN%22%3A%22%24%7Binput%3ASONARCLOUD_TOKEN%7D%22%2C%22SONARCLOUD_ORGANIZATION%22%3A%22%24%7Binput%3ASONARCLOUD_ORGANIZATION%7D%22%7D%7D)
+
+### Cursor
+
+[![Install for Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=sonarcloud&config=eyJjb21tYW5kIjoibnB4IHNvbmFyY2xvdWQtbWNwLXNlcnZlciIsImVudiI6eyJTT05BUkNMT1VEX1RPS0VOIjoiPHRva2VuPiIsIlNPTkFSQ0xPVURfT1JHQU5JWkFUSU9OIjoiPG9yZz4ifX0%3D)
+
+### Claude Code
+
+[![Install for Claude Code](https://img.shields.io/badge/Claude_Code-Install_SonarCloud_MCP-FF6B35?style=flat-square&logo=anthropic&logoColor=white)](claude-desktop://install-mcp-server?name=sonarcloud&serverConfig=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22sonarcloud-mcp-server%22%5D%2C%22env%22%3A%7B%22SONARCLOUD_TOKEN%22%3A%22%3Ctoken%3E%22%2C%22SONARCLOUD_ORGANIZATION%22%3A%22%3Corg%3E%22%7D%7D)
+
+## Manual Configuration
 
 Add this server to your MCP configuration file (`.mcp.json` for Claude Code):
 
