@@ -1,10 +1,10 @@
 {
-  "name": "sonarcloud-mcp-server",
+  "name": "community-community-sonarcloud-mcp-server",
   "version": "1.0.0",
   "description": "Model Context Protocol (MCP) server for SonarCloud integration - provides AI tools for querying code quality metrics, issues, and project data",
   "main": "dist/index.js",
   "bin": {
-    "sonarcloud-mcp": "dist/index.js"
+    "community-sonarcloud-mcp": "dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -17,12 +17,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/langtind/sonarcloud-mcp-server.git"
+    "url": "git+https://github.com/langtind/community-sonarcloud-mcp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/langtind/sonarcloud-mcp-server/issues"
+    "url": "https://github.com/langtind/community-sonarcloud-mcp-server/issues"
   },
-  "homepage": "https://github.com/langtind/sonarcloud-mcp-server#readme",
+  "homepage": "https://github.com/langtind/community-sonarcloud-mcp-server#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "axios": "^1.7.0"
