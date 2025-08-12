@@ -1,0 +1,5 @@
+{
+  "token": "your_sonarcloud_token_here",
+  "organization": "your_organization_key",
+  "url": "https://sonarcloud.io"
+}
