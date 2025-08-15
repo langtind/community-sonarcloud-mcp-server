@@ -93,6 +93,26 @@ Each tool returns structured JSON data optimized for AI analysis and decision-ma
 
 [![Install for VS Code](https://img.shields.io/badge/VS_Code-Install_Community_SonarCloud_MCP-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=community-sonarcloud-mcp&inputs=%5B%7B%22id%22%3A%22SONARCLOUD_TOKEN%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22SonarCloud%20Token%22%2C%22password%22%3Atrue%7D%2C%7B%22id%22%3A%22SONARCLOUD_ORGANIZATION%22%2C%22type%22%3A%22promptString%22%2C%22description%22%3A%22SonarCloud%20Organization%20Key%22%2C%22password%22%3Afalse%7D%5D&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22community-sonarcloud-mcp-server%22%5D%2C%22env%22%3A%7B%22SONARCLOUD_TOKEN%22%3A%22%24%7Binput%3ASONARCLOUD_TOKEN%7D%22%2C%22SONARCLOUD_ORGANIZATION%22%3A%22%24%7Binput%3ASONARCLOUD_ORGANIZATION%7D%22%7D%7D)
 
+### Claude Code
+
+For [Anthropic's Claude Code](https://claude.ai/code) CLI tool, use this one-liner:
+
+```bash
+claude mcp add-json sonarcloud '{
+  "command": "npx", 
+  "args": ["community-sonarcloud-mcp-server"],
+  "env": {
+    "SONARCLOUD_TOKEN": "your-token-here",
+    "SONARCLOUD_ORGANIZATION": "your-org-key"
+  }
+}' -s local
+```
+
+Verify the connection with:
+```bash
+claude mcp list
+```
+
 ## Manual Configuration
 
 Add this server to your MCP configuration file (`.mcp.json` for Claude Code):
@@ -135,10 +155,45 @@ Then reference the global installation:
 
 ### Getting Your SonarCloud Token
 
-1. Go to [SonarCloud](https://sonarcloud.io)
-2. Navigate to **My Account** → **Security**
-3. Generate a new token with appropriate permissions
-4. Copy the token and add it to your configuration
+1. Go to [SonarCloud Security Settings](https://sonarcloud.io/account/security)
+2. Click **Generate Tokens**
+3. Give your token a name (e.g., "Claude Code MCP")
+4. Set token permissions:
+   - **Browse**: Required for viewing projects and issues
+   - **Execute Analysis**: Optional (only needed for CI/CD integration)
+5. Generate the token and copy it immediately (you won't see it again)
+6. Add the token to your configuration
+
+### Finding Your Organization Key
+
+Your organization key is found in the URL when viewing your SonarCloud organization:
+- URL format: `https://sonarcloud.io/organizations/{your-org-key}`
+- Example: For URL `https://sonarcloud.io/organizations/my-company`, the key is `my-company`
+
+⚠️ **Security Note**: Never commit your SonarCloud token to version control. Store it securely as an environment variable.
+
+## Troubleshooting
+
+### "SONARCLOUD_TOKEN is required" error
+- Ensure your token is properly set in environment variables or config
+- Check that the token hasn't been revoked or expired in SonarCloud
+- Verify the token has the correct permissions (Browse is minimum required)
+
+### "Failed to connect" in Claude Code
+- Verify the organization name matches exactly (case-sensitive)
+- Check that your organization key is correct (found in SonarCloud URL)
+- Ensure the token has access to the specified organization
+- Try running the server directly: `SONARCLOUD_TOKEN="your_token" SONARCLOUD_ORGANIZATION="your_org" npx community-sonarcloud-mcp-server`
+
+### "No projects found" or empty responses
+- Verify your token has Browse permissions for the organization
+- Check that projects exist in the specified organization
+- Ensure your user account has access to the organization's projects
+
+### MCP Server not starting
+- Check that Node.js version is compatible (14+)
+- Verify npm/npx is working correctly
+- Try installing globally first: `npm install -g community-sonarcloud-mcp-server`
 
 ## Usage Examples
 
