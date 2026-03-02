@@ -9,12 +9,73 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import axios from 'axios';
 import { readFileSync } from 'fs';
-import { createInterface } from 'readline';
 
 interface SonarCloudConfig {
   token: string;
   organization?: string;
   url: string;
+}
+
+interface SearchIssuesArgs {
+  project?: string;
+  pullRequest?: string;
+  resolved?: boolean;
+  severities?: string;
+  types?: string;
+  impactSeverities?: string;
+  impactSoftwareQualities?: string;
+  pageSize?: number;
+}
+
+interface GetMeasuresArgs {
+  component: string;
+  pullRequest?: string;
+  metricKeys?: string;
+  strategy?: string;
+}
+
+interface ListProjectsArgs {
+  q?: string;
+  pageSize?: number;
+}
+
+interface GetPullRequestsArgs {
+  project: string;
+}
+
+interface ChangeIssueStatusArgs {
+  key: string;
+  transition: string;
+}
+
+interface ListLanguagesArgs {
+  q?: string;
+}
+
+interface SearchMetricsArgs {
+  q?: string;
+  pageSize?: number;
+}
+
+interface GetQualityGateStatusArgs {
+  projectKey: string;
+  branch?: string;
+  pullRequest?: string;
+}
+
+interface ShowRuleArgs {
+  key: string;
+}
+
+interface ListRuleRepositoriesArgs {
+  language?: string;
+  q?: string;
+}
+
+interface GetRawSourceArgs {
+  key: string;
+  branch?: string;
+  pullRequest?: string;
 }
 
 class SonarCloudMCPServer {
@@ -75,37 +136,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async promptForMissingConfig(): Promise<void> {
-    if (!this.config.token) {
-      const rl = createInterface({
-        input: process.stdin,
-        output: process.stderr, // Use stderr to not interfere with MCP protocol
-      });
-
-      this.config.token = await new Promise((resolve) => {
-        rl.question('SonarCloud Token: ', (answer) => {
-          rl.close();
-          resolve(answer.trim());
-        });
-      });
-    }
-
-    if (!this.config.organization) {
-      const rl = createInterface({
-        input: process.stdin,
-        output: process.stderr,
-      });
-
-      this.config.organization = await new Promise((resolve) => {
-        rl.question('SonarCloud Organization: ', (answer) => {
-          rl.close();
-          resolve(answer.trim());
-        });
-      });
-    }
-  }
-
-  private async makeRequest(endpoint: string, params: Record<string, any> = {}) {
+  private async makeRequest(endpoint: string, params: Record<string, any> = {}, method: 'GET' | 'POST' = 'GET') {
     const baseURL = this.config.url.endsWith('/') ? this.config.url.slice(0, -1) : this.config.url;
     const url = `${baseURL}/api${endpoint}`;
 
@@ -119,10 +150,9 @@ class SonarCloudMCPServer {
     }
 
     try {
-      const response = await axios.get(url, {
-        headers,
-        params,
-      });
+      const response = method === 'POST'
+        ? await axios.post(url, null, { headers, params })
+        : await axios.get(url, { headers, params });
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -158,11 +188,19 @@ class SonarCloudMCPServer {
                 },
                 severities: {
                   type: 'string',
-                  description: 'Comma-separated list of severities (MAJOR, MINOR, etc.)',
+                  description: 'Comma-separated list of severities (INFO, MINOR, MAJOR, CRITICAL, BLOCKER)',
                 },
                 types: {
                   type: 'string',
-                  description: 'Comma-separated list of types (BUG, VULNERABILITY, CODE_SMELL)',
+                  description: 'Comma-separated list of types (BUG, VULNERABILITY, CODE_SMELL). Note: SonarCloud is transitioning to Clean Code taxonomy with software qualities instead.',
+                },
+                impactSeverities: {
+                  type: 'string',
+                  description: 'Comma-separated Clean Code impact severities (LOW, MEDIUM, HIGH)',
+                },
+                impactSoftwareQualities: {
+                  type: 'string',
+                  description: 'Comma-separated software qualities (SECURITY, RELIABILITY, MAINTAINABILITY)',
                 },
                 pageSize: {
                   type: 'number',
@@ -369,34 +407,35 @@ class SonarCloudMCPServer {
     });
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { name, arguments: args } = request.params;
+      const { name, arguments: rawArgs = {} } = request.params;
+      const args = rawArgs as Record<string, unknown>;
 
       try {
         switch (name) {
           case 'search_issues':
-            return await this.searchIssues(args);
+            return await this.searchIssues(args as unknown as SearchIssuesArgs);
           case 'get_measures':
-            return await this.getMeasures(args);
+            return await this.getMeasures(args as unknown as GetMeasuresArgs);
           case 'list_projects':
-            return await this.listProjects(args);
+            return await this.listProjects(args as unknown as ListProjectsArgs);
           case 'get_pull_requests':
-            return await this.getPullRequests(args);
+            return await this.getPullRequests(args as unknown as GetPullRequestsArgs);
           case 'change_issue_status':
-            return await this.changeIssueStatus(args);
+            return await this.changeIssueStatus(args as unknown as ChangeIssueStatusArgs);
           case 'list_languages':
-            return await this.listLanguages(args);
+            return await this.listLanguages(args as unknown as ListLanguagesArgs);
           case 'search_metrics':
-            return await this.searchMetrics(args);
+            return await this.searchMetrics(args as unknown as SearchMetricsArgs);
           case 'get_quality_gate_status':
-            return await this.getQualityGateStatus(args);
+            return await this.getQualityGateStatus(args as unknown as GetQualityGateStatusArgs);
           case 'list_quality_gates':
-            return await this.listQualityGates(args);
+            return await this.listQualityGates();
           case 'show_rule':
-            return await this.showRule(args);
+            return await this.showRule(args as unknown as ShowRuleArgs);
           case 'list_rule_repositories':
-            return await this.listRuleRepositories(args);
+            return await this.listRuleRepositories(args as unknown as ListRuleRepositoriesArgs);
           case 'get_raw_source':
-            return await this.getRawSource(args);
+            return await this.getRawSource(args as unknown as GetRawSourceArgs);
           default:
             throw new Error(`Unknown tool: ${name}`);
         }
@@ -413,14 +452,16 @@ class SonarCloudMCPServer {
     });
   }
 
-  private async searchIssues(args: any) {
+  private async searchIssues(args: SearchIssuesArgs) {
     const params: Record<string, any> = {};
-    
+
     if (args.project) params.componentKeys = args.project;
     if (args.pullRequest) params.pullRequest = args.pullRequest;
     if (args.resolved !== undefined) params.resolved = args.resolved;
     if (args.severities) params.severities = args.severities;
     if (args.types) params.types = args.types;
+    if (args.impactSeverities) params.impactSeverities = args.impactSeverities;
+    if (args.impactSoftwareQualities) params.impactSoftwareQualities = args.impactSoftwareQualities;
     params.ps = Math.min(args.pageSize || 100, 500);
 
     const data = await this.makeRequest('/issues/search', params);
@@ -444,7 +485,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async getMeasures(args: any) {
+  private async getMeasures(args: GetMeasuresArgs) {
     const params: Record<string, any> = {
       component: args.component,
       metricKeys: args.metricKeys || 'sqale_index,coverage,ncloc,reliability_rating,security_rating,bugs,vulnerabilities,code_smells',
@@ -472,7 +513,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async listProjects(args: any) {
+  private async listProjects(args: ListProjectsArgs) {
     const params: Record<string, any> = {
       ps: args.pageSize || 100,
     };
@@ -497,7 +538,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async getPullRequests(args: any) {
+  private async getPullRequests(args: GetPullRequestsArgs) {
     const data = await this.makeRequest(`/project_pull_requests/list`, {
       project: args.project,
     });
@@ -514,11 +555,11 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async changeIssueStatus(args: any) {
+  private async changeIssueStatus(args: ChangeIssueStatusArgs) {
     const data = await this.makeRequest('/issues/do_transition', {
       issue: args.key,
       transition: args.transition,
-    });
+    }, 'POST');
 
     return {
       content: [
@@ -534,7 +575,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async listLanguages(args: any) {
+  private async listLanguages(args: ListLanguagesArgs) {
     const params: Record<string, any> = {};
     if (args.q) params.q = args.q;
 
@@ -552,7 +593,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async searchMetrics(args: any) {
+  private async searchMetrics(args: SearchMetricsArgs) {
     const params: Record<string, any> = {
       ps: args.pageSize || 100,
     };
@@ -576,7 +617,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async getQualityGateStatus(args: any) {
+  private async getQualityGateStatus(args: GetQualityGateStatusArgs) {
     const params: Record<string, any> = {
       projectKey: args.projectKey,
     };
@@ -598,7 +639,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async listQualityGates(args: any) {
+  private async listQualityGates() {
     const data = await this.makeRequest('/qualitygates/list');
 
     return {
@@ -614,7 +655,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async showRule(args: any) {
+  private async showRule(args: ShowRuleArgs) {
     const data = await this.makeRequest('/rules/show', {
       key: args.key,
     });
@@ -631,7 +672,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async listRuleRepositories(args: any) {
+  private async listRuleRepositories(args: ListRuleRepositoriesArgs) {
     const params: Record<string, any> = {};
     if (args.language) params.language = args.language;
     if (args.q) params.q = args.q;
@@ -650,7 +691,7 @@ class SonarCloudMCPServer {
     };
   }
 
-  private async getRawSource(args: any) {
+  private async getRawSource(args: GetRawSourceArgs) {
     const params: Record<string, any> = {
       key: args.key,
     };
@@ -672,18 +713,12 @@ class SonarCloudMCPServer {
 
   async run() {
     try {
-      // Validate configuration
       if (!this.config.token) {
-        throw new Error('SONARCLOUD_TOKEN is required');
-      }
-      
-      if (!this.config.organization) {
-        throw new Error('SONARCLOUD_ORGANIZATION is required');
+        throw new Error('SONARCLOUD_TOKEN is required. Set via --token, SONARCLOUD_TOKEN env var, or config file.');
       }
 
-      // Prompt for missing config only if running interactively
-      if (process.stdin.isTTY && (!this.config.token || !this.config.organization)) {
-        await this.promptForMissingConfig();
+      if (!this.config.organization) {
+        throw new Error('SONARCLOUD_ORGANIZATION is required. Set via --org, SONARCLOUD_ORGANIZATION env var, or config file.');
       }
 
       const transport = new StdioServerTransport();
