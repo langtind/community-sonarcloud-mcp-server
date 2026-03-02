@@ -9,6 +9,14 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import axios from 'axios';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
+const pkg = JSON.parse(readFileSync(resolve(__dirname, '..', 'package.json'), 'utf8'));
+
+if (process.argv.includes('--version') || process.argv.includes('-v')) {
+  console.log(pkg.version);
+  process.exit(0);
+}
 
 interface SonarCloudConfig {
   token: string;
@@ -86,7 +94,7 @@ class SonarCloudMCPServer {
     this.server = new Server(
       {
         name: 'sonarcloud-mcp-server',
-        version: '1.1.0',
+        version: pkg.version,
       },
       {
         capabilities: {
