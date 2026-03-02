@@ -27,6 +27,12 @@ Or run directly with npx:
 npx community-sonarcloud-mcp-server
 ```
 
+Check version:
+
+```bash
+npx community-sonarcloud-mcp-server --version
+```
+
 ## Configuration
 
 ### Method 1: Environment Variables
@@ -56,10 +62,7 @@ Config file format:
 }
 ```
 
-### Method 4: Interactive Prompts
-If token/organization is missing and running interactively, the server will prompt for them.
-
-**Priority order:** CLI args > Environment vars > Config file > Prompts
+**Priority order:** CLI args > Environment vars > Config file
 
 ## Available Tools
 
@@ -67,7 +70,7 @@ This server provides 12 comprehensive tools for SonarCloud integration:
 
 ### Core Project & Issue Management
 - **`list_projects`** - List all projects in your organization
-- **`search_issues`** - Search and filter issues by project, severity, type, status
+- **`search_issues`** - Search and filter issues by project, severity, type, status, and Clean Code impact qualities
 - **`get_pull_requests`** - List pull requests for a specific project
 - **`change_issue_status`** - Mark issues as confirmed, false positive, won't fix, or reopen
 
@@ -143,7 +146,7 @@ Then reference the global installation:
 {
   "mcpServers": {
     "community-sonarcloud-mcp": {
-      "command": "sonarcloud-mcp",
+      "command": "community-sonarcloud-mcp",
       "env": {
         "SONARCLOUD_TOKEN": "your_token_here",
         "SONARCLOUD_ORGANIZATION": "your_org_here"
@@ -191,7 +194,7 @@ Your organization key is found in the URL when viewing your SonarCloud organizat
 - Ensure your user account has access to the organization's projects
 
 ### MCP Server not starting
-- Check that Node.js version is compatible (14+)
+- Check that Node.js version is compatible (18+)
 - Verify npm/npx is working correctly
 - Try installing globally first: `npm install -g community-sonarcloud-mcp-server`
 
