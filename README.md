@@ -98,17 +98,8 @@ Each tool returns structured JSON data optimized for AI analysis and decision-ma
 
 ### Claude Code
 
-For [Anthropic's Claude Code](https://claude.ai/code) CLI tool, use this one-liner:
-
 ```bash
-claude mcp add-json sonarcloud '{
-  "command": "npx", 
-  "args": ["community-sonarcloud-mcp-server"],
-  "env": {
-    "SONARCLOUD_TOKEN": "your-token-here",
-    "SONARCLOUD_ORGANIZATION": "your-org-key"
-  }
-}' -s local
+claude mcp add -s user -e SONARCLOUD_TOKEN=your-token-here -e SONARCLOUD_ORGANIZATION=your-org-key sonarcloud -- npx community-sonarcloud-mcp-server
 ```
 
 Verify the connection with:
